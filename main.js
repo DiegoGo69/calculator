@@ -1,3 +1,6 @@
+// num ope num match /g finds all matches
+//let regex = /^(\d) ?([+-*\/]) ?(\d) ?[+-*\/=]/;
+let regex = /^(\d) ?([\+\-\*\/]) ?(\d) ?(?:[\+\-\*\/=])/;
 let displayContent = "";
 
 const screenMain = document.querySelector('.screenMain');
@@ -55,7 +58,7 @@ keyboard.addEventListener('click', event => {
             displayContent += key["value"];
             display(displayContent);
             break;
-            
+
         case ".":
             displayContent += key["value"];
             display(displayContent);
@@ -100,8 +103,49 @@ keyboard.addEventListener('click', event => {
             displayContent += "COPY";
             display(displayContent);
             break;
+        // DEFAULT ???
+    }
 
-        
-        
+    // After buttons are pressed test diplsay content
+    if (regex.test(displayContent)) {
+        // if match. get matches
+        let match = displayContent.match(regex);
+        let a = match[1];
+        let b = match[3];
+        let operator = match[2];
+        // operate
+        let result = operate(a, b, operator)
+        // change display content
+        displayContent = result;
+        display(displayContent);
     }
 })
+
+function add(a, b) {return a + b}
+function substract(a, b) {return a - b}
+function multiply(a, b) {return a * b}
+function divide(a, b) {return a / b}
+
+function operate(a, b, operator) {
+    let result;
+    switch (operator) {
+        case '+':
+            result = add(+a, +b);
+            break;
+        case '-':
+            substract(a, b);
+            break;
+        case '*':
+            multiply(a, b);
+            break;
+        case '/':
+            divide(a, b);
+            break;    
+    }
+    return result;
+}
+
+/* I could use an input textbox, and add an event listener on change
+so if the user enters input it works,
+and if user type via buttons it also works
+because is onchange */
