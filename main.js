@@ -1,6 +1,6 @@
 // num ope num match /g finds all matches
 //let regex = /^(\d) ?([+-*\/]) ?(\d) ?[+-*\/=]/;
-let regex = /^(\d) ?([\+\-\*\/]) ?(\d) ?(?:[\+\-\*\/=])/;
+let regex = /^(\d+) ?(\+|\-|\*|\/) ?(\d+) ?(?:\+|\-|\*|\/|=)/;
 let displayContent = "";
 
 const screenMain = document.querySelector('.screenMain');
@@ -127,19 +127,21 @@ function multiply(a, b) {return a * b}
 function divide(a, b) {return a / b}
 
 function operate(a, b, operator) {
+    a = +a;
+    b = +b;
     let result;
     switch (operator) {
         case '+':
-            result = add(+a, +b);
+            result = add(a, b);
             break;
         case '-':
-            substract(a, b);
+            result = substract(a, b);
             break;
         case '*':
-            multiply(a, b);
+            result = multiply(a, b);
             break;
         case '/':
-            divide(a, b);
+            result = divide(a, b);
             break;    
     }
     return result;
