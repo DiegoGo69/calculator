@@ -49,6 +49,6 @@ main {
 }   
 
 button {
-    flex: 1;
-    padding: 20px 30px;
+    flex: 1 1 75px;
+    padding: 20px;
 }
