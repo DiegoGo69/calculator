@@ -1,6 +1,32 @@
+const log = console.log;
 // num ope num match /g finds all matches
 // let regex = /^(\d+\.?\d*) ?([+\-*\/\^]) ?(\d+\.?\d*) ?(?:[+\\*\/\^=])/;
 const regex = /^(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
+
+// cannot start with dot, plus, minus, div, mult, pow
+const invalidStart = /^[+\-*\/^=\.]/;
+
+// cannot end with two operators (not dot)
+// deletes 2 char replaces previous operator with the one just entered
+const invalidEnd = /[+\-*\/^=]{2,}$/;
+
+// cannot end with dot and an operator. deletes just 1 char
+const invalidEnd3 = /[\.][+\-*\/^=\.]$/;
+// 8././
+
+// cannot end with an operand with 2 dots
+const invalidEnd2 = /\d[\.]\d+[\.]$/;
+
+// cannot start with operand and an equal sign
+const invalidStart2= /^\d+(?:\.\d+)? ?=/;
+
+
+const regexInvalid = /^[+\-*\/^=]+/;
+const reInvalidOperand = /(?:[\d]*[+\-*\/^=])[+\-*\/^=]+$/;
+
+
+
+const reOperator = /[+\-*\/^=\.]/;
 
 let displayContent = "";
 
@@ -14,99 +40,154 @@ const keyboard = document.querySelector('.keyboard');
 keyboard.addEventListener('click', event => {
     // element key's value of dataset attribute
     let key = event.target.dataset;
+    let keyValue = "";
     switch (key["value"]) {
         case "0":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "1":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "2":
-            displayContent += key["value"];
-            display(displayContent);
-            break;
-        case "2":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "3":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "4":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "5":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "6":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "7":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "8":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "9":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
 
         case ".":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
+
+            // event.target.setAttribute('disabled', 'truen');
             break;
         
         case "+":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "-":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "*":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
         case "/":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
 
         case "=":
-            displayContent += key["value"];
-            display(displayContent);
+            keyValue = key["value"];
+            // display(displayContent);
             break;
 
 
         case "c":
             displayContent = '';
             display(displayContent);
+            return
             break;
         case "del":
-            displayContent = displayContent.split("").slice(0, (displayContent.length - 1)).join("");
+            // displayContent = displayContent.split("").slice(0, (displayContent.length - 1)).join("");
+            displayContent = del(displayContent);
             display(displayContent);
+            return
             break;
         case "pow":
-            displayContent += "^";
-            display(displayContent);
+            keyValue = "^";
+            // display(displayContent);
             break;
         case "cp":
             copyToClipboard();
+            return
 
-            display(displayContent);
+            // display(displayContent);
             break;
         // DEFAULT ???
     }
+    // innecesar
+    
+    log(keyValue);
+    displayContent += keyValue;
+    let valid = true;
+
+    // IF INVALID START OF STRING
+    if (invalidStart.test(displayContent)) {
+        log('INVALID');
+        // Delete last two characters
+        displayContent = del(displayContent)
+        valid = false;
+    }
+
+    // cannot end with two operators (not dot)
+    // If previous was operator replaced with the one just entered
+    if (invalidEnd.test(displayContent)) {
+        log('INVALID');
+        // Delete last two characters
+        // delete char just entered
+        displayContent = del(displayContent);
+        // delete previous char to replace with the just entered
+        displayContent = del(displayContent);
+        displayContent += keyValue;
+        valid = false;
+    }    
+
+    // cannot end with an operand with 2 dots
+    if (invalidEnd2.test(displayContent)) {
+        log('INVALID');
+        // delete char just entered
+        displayContent = del(displayContent);
+        valid = false;
+    }  
+
+    // cannot end with dot and an operator. deletes just 1 char
+    if (invalidEnd3.test(displayContent)) {
+        log('INVALID');
+        // delete char just entered
+        displayContent = del(displayContent);
+        valid = false;
+    } 
+
+    // cannot start with operand and an equal sign
+    if (invalidStart2.test(displayContent)) {
+        log('INVALID');
+        // Delete last two characters
+        // celete char just entered
+        // delete previous char to replace with the just entered
+        displayContent = del(displayContent);
+        valid = false;
+    } 
 
     // After buttons are pressed test diplsay content
     if (regex.test(displayContent)) {
@@ -116,15 +197,38 @@ keyboard.addEventListener('click', event => {
         let operator = match[2];
         let b = match[3];
         let secOperator = match[4];
-        // operate
-        let result = operate(a, b, operator)
-        // change display content
-        displayContent = result;
-        
-        if (secOperator !== '=') {displayContent += secOperator};
-        display(displayContent);
+
+        if (validateInput(a, b, operator)) {
+            // operate
+            let result = operate(a, b, operator)
+            // change display content
+            displayContent = result;
+            
+            if (secOperator !== '=') {displayContent += secOperator};
+        }
     }
+    if (valid) { log('VALID') };
+    display(displayContent);
 })
+
+function del(string) {
+    if (!string) return '';
+    string =
+        string
+        .split("")
+        .slice(0, (string.length - 1))
+        .join("");
+    return string
+}
+
+// Validate input
+function validateInput(a, b, operator) {
+    if (reInvalidOperand.test(a)) {return false};
+    if (reInvalidOperand.test(b)) {return false};
+    if (reInvalidOperator.test(operator)) {return false};
+    return true
+}
+
 
 function add(a, b) {return a + b}
 function substract(a, b) {return a - b}
