@@ -1,7 +1,6 @@
 // num ope num match /g finds all matches
-//let regex = /^(\d) ?([+-*\/]) ?(\d) ?[+-*\/=]/;
-// let regex = /^(\d+) ?(\+|\-|\*|\/) ?(\d+) ?(?:\+|\-|\*|\/|=)/;
-let regex = /^(\d+\.?\d*) ?([+\-*\/\^]) ?(\d+\.?\d*) ?(?:[+\\*\/\^=])/;
+// let regex = /^(\d+\.?\d*) ?([+\-*\/\^]) ?(\d+\.?\d*) ?(?:[+\\*\/\^=])/;
+const regex = /^(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
 
 let displayContent = "";
 
@@ -114,12 +113,15 @@ keyboard.addEventListener('click', event => {
         // if match. get matches
         let match = displayContent.match(regex);
         let a = match[1];
-        let b = match[3];
         let operator = match[2];
+        let b = match[3];
+        let secOperator = match[4];
         // operate
         let result = operate(a, b, operator)
         // change display content
         displayContent = result;
+        
+        if (secOperator !== '=') {displayContent += secOperator};
         display(displayContent);
     }
 })
@@ -167,6 +169,9 @@ function copyToClipboard() {
   // Alert the copied text
   console.log("Copied the text: " + copy.value);
 }
+
+
+// VALIDATE INPUT
 
 // if operator follow by an operator invalid
 
