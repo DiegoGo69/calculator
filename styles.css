@@ -84,6 +84,16 @@ button {
 
 .cp:hover {
     background-color: hsl(308, 70%, 45%);
-    cursor: copy;
+}
+
+a { 
+    color:darkviolet;
+}
+
+footer {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
