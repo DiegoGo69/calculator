@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     align-content: center;
+    background-color: hsl(0, 10%, 90%);
     
 }
 
@@ -26,6 +27,7 @@ main {
     height: 450px;
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 .screen {
@@ -51,4 +53,28 @@ main {
 button {
     flex: 1 1 75px;
     padding: 20px;
+    color: white;
+    background-color: #403d3d;
+}
+
+.num:hover {
+    background-color: hsl(53, 93%, 54%);
+    color: #403d3d;
+}
+
+.op:hover {
+    background-color: hsl(195, 70%, 49%);
+}
+
+.eq:hover {
+    background-color: hsl(125, 75%, 48%);
+}
+
+.clear:hover,
+.del:hover {
+    background-color: hsl(0, 80%, 60%);
+}
+
+.cp:hover {
+    background-color: hsl(308, 70%, 45%);
 }
