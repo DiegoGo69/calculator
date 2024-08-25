@@ -26,10 +26,10 @@ const validOperator = /[+\-*\/^]/;
 
 let displayContent = "";
 
-const screenMain = document.querySelector('.screenMain');
+const screen = document.querySelector('.screen');
 
 function display(content) {
-    screenMain.textContent = content;
+    screen.textContent = content;
 }
 
 const keyboard = document.querySelector('.keyboard');

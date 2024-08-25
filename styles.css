@@ -3,7 +3,7 @@
     border: 0px;
     padding: 0px;
     box-sizing: border-box;
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
 }
 
 body {
@@ -12,7 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     align-content: center;
-    background-color: hsl(0, 10%, 90%);
+    background-color: hsl(0, 0%, 15%);
     
 }
 
@@ -28,33 +28,40 @@ main {
     display: flex;
     flex-direction: column;
     background-color: white;
-}
+    box-shadow: 0px 0px 11px 1px hsl(330, 23%, 5%);
+} 
 
 .screen {
     flex: 1;
     display: flex;
+    padding: 15px 20px;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+    font-weight: 500;    
+    color: hsl(0, 1%, 95%);
     flex-direction: column;
-}
-
-.screenTop {
-    flex: 2;
-}
-
-.screenMain {
-    flex: 3;
+    background-color: #252526;
 }
 
 .keyboard {
     flex: 3;
     display: flex;
     flex-wrap: wrap;
+    background-color: #403d3d;
 }   
 
 button {
-    flex: 1 1 75px;
+    width: 75px;
+    height: 70px;
+    flex: auto; 
     padding: 20px;
-    color: white;
-    background-color: #403d3d;
+    color: hsl(0, 1%, 95%);
+    background-color: #222222;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s;
 }
 
 .num:hover {
@@ -63,7 +70,7 @@ button {
 }
 
 .op:hover {
-    background-color: hsl(195, 70%, 49%);
+    background-color: hsl(195, 70%, 52%);
 }
 
 .eq:hover {
@@ -77,4 +84,6 @@ button {
 
 .cp:hover {
     background-color: hsl(308, 70%, 45%);
+    cursor: copy;
 }
+

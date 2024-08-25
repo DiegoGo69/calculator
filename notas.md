@@ -15,3 +15,7 @@ num op dot
 
 const reInvalidOperand = /^[+\-*\/^=\.]*\d*(?:\.[+\-*\/^=\.]*)*/;
 const reInvalidOperator = /=+/;
+
+div {
+  transition: <property> <duration> <timing-function> <delay>;
+}
