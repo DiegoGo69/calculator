@@ -6,27 +6,23 @@ const regex = /^(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
 // cannot start with dot, plus, minus, div, mult, pow
 const invalidStart = /^[+\-*\/^=\.]/;
 
+// cannot start with operand and an equal sign.
+const invalidStart2= /^\d+(?:\.\d+)? ?=/;
+
 // cannot end with two operators (not dot)
 // deletes 2 char replaces previous operator with the one just entered
 const invalidEnd = /[+\-*\/^=]{2,}$/;
 
-// cannot end with dot and an operator. deletes just 1 char
-const invalidEnd3 = /[\.][+\-*\/^=\.]$/;
-// 8././
-
 // cannot end with an operand with 2 dots
 const invalidEnd2 = /\d[\.]\d+[\.]$/;
 
-// cannot start with operand and an equal sign
-const invalidStart2= /^\d+(?:\.\d+)? ?=/;
+// cannot end with dot and an operator. or operator and a dot. deletes just 1 char
+const invalidEnd3 = /(?:[\.][+\-*\/^=\.]|[+\-*\/^=]\.)$/;
+// 8././
 
 
-const regexInvalid = /^[+\-*\/^=]+/;
-const reInvalidOperand = /(?:[\d]*[+\-*\/^=])[+\-*\/^=]+$/;
-
-
-
-const reOperator = /[+\-*\/^=\.]/;
+const validOperand = /^\d+(?:\.\d+)?/;
+const validOperator = /[+\-*\/^]/;
 
 let displayContent = "";
 
@@ -211,21 +207,21 @@ keyboard.addEventListener('click', event => {
     display(displayContent);
 })
 
-function del(string) {
-    if (!string) return '';
-    string =
-        string
+function del(text) {
+    if (!text) return '';
+    text =
+        text
         .split("")
-        .slice(0, (string.length - 1))
+        .slice(0, (text.length - 1))
         .join("");
-    return string
+    return text
 }
 
 // Validate input
 function validateInput(a, b, operator) {
-    if (reInvalidOperand.test(a)) {return false};
-    if (reInvalidOperand.test(b)) {return false};
-    if (reInvalidOperator.test(operator)) {return false};
+    if (!validOperand.test(a)) {return false};
+    if (!validOperand.test(b)) {return false};
+    if (!validOperator.test(operator)) {return false};
     return true
 }
 
