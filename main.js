@@ -1,10 +1,10 @@
 const log = console.log;
 // num ope num match /g finds all matches
 // let regex = /^(\d+\.?\d*) ?([+\-*\/\^]) ?(\d+\.?\d*) ?(?:[+\\*\/\^=])/;
-const regex = /^(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
+const regex = /^-?(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
 
 // cannot start with dot, plus, minus, div, mult, pow
-const invalidStart = /^[+\-*\/^=\.]/;
+const invalidStart = /^[+\-*\/^=\.][+\-*\/^=\.]*/;
 
 // cannot start with operand and an equal sign.
 const invalidStart2= /^\d+(?:\.\d+)? ?=/;
@@ -194,13 +194,24 @@ keyboard.addEventListener('click', event => {
         let b = match[3];
         let secOperator = match[4];
 
-        if (validateInput(a, b, operator)) {
-            // operate
-            let result = operate(a, b, operator)
-            // change display content
-            displayContent = result;
-            
-            if (secOperator !== '=') {displayContent += secOperator};
+        if (validInteger(a, b, operator)) {
+            // Check zero division
+            if (zeroDivision(a, b, operator)) {
+                displayContent = '';
+                log('Invalid zero division');
+                alert('Invalid zero division.');}
+            else {
+                // operate
+                let result = operate(a, b, operator)
+                // change display content
+                displayContent = result;
+                if (secOperator !== '=') {displayContent += secOperator};
+
+                if (result === Infinity || result === -Infinity) {
+                    alert("Slow down, I'm just a basic calculator. 2 + 2 = 4"); 
+                    displayContent = '';
+                }
+            }
         }
     }
     if (valid) { log('VALID') };
@@ -218,13 +229,18 @@ function del(text) {
 }
 
 // Validate input
-function validateInput(a, b, operator) {
+function validInteger(a, b, operator) {
     if (!validOperand.test(a)) {return false};
     if (!validOperand.test(b)) {return false};
     if (!validOperator.test(operator)) {return false};
     return true
 }
 
+// Zero division error
+function zeroDivision(a, b, operator) {
+    if ((a == 0 || b == 0) && operator == '/') {return true}
+    return false
+}
 
 function add(a, b) {return a + b}
 function substract(a, b) {return a - b}
