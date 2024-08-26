@@ -51,7 +51,7 @@ main {
     background-color: #403d3d;
 }   
 
-button {
+.key {
     width: 75px;
     height: 70px;
     flex: auto; 

@@ -1,182 +1,73 @@
 const log = console.log;
-// num ope num match /g finds all matches
-// let regex = /^(\d+\.?\d*) ?([+\-*\/\^]) ?(\d+\.?\d*) ?(?:[+\\*\/\^=])/;
+// Valid arithmetic operation input
 const regex = /^-?(\d+(?:\.\d+)?) ?([+\-*\/^]) ?(\d+(?:\.\d+)?) ?([+\-*\/^=])/;
-
 // cannot start with dot, plus, minus, div, mult, pow
 const invalidStart = /^[+\-*\/^=\.][+\-*\/^=\.]*/;
-
 // cannot start with operand and an equal sign.
 const invalidStart2= /^\d+(?:\.\d+)? ?=/;
-
-// cannot end with two operators (not dot)
-// deletes 2 char replaces previous operator with the one just entered
+// cannot end with two operators. dots not included
 const invalidEnd = /[+\-*\/^=]{2,}$/;
-
 // cannot end with an operand with 2 dots
 const invalidEnd2 = /\d[\.]\d+[\.]$/;
-
-// cannot end with dot and an operator. or operator and a dot. deletes just 1 char
+// cannot end with dot operator. or operator dot
 const invalidEnd3 = /(?:[\.][+\-*\/^=\.]|[+\-*\/^=]\.)$/;
-// 8././
-
 
 const validOperand = /^\d+(?:\.\d+)?/;
 const validOperator = /[+\-*\/^]/;
 
+// Text to show in calc screen
 let displayContent = "";
-
+// Screen reference
 const screen = document.querySelector('.screen');
-
 function display(content) {
     screen.textContent = content;
 }
-
+// Keyboard event handler
 const keyboard = document.querySelector('.keyboard');
 keyboard.addEventListener('click', event => {
-    // element key's value of dataset attribute
-    let key = event.target.dataset;
+    // Key's element reference
+    let key = event.target;
     let keyValue = "";
-    switch (key["value"]) {
-        case "0":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "1":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "2":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "3":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "4":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "5":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "6":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "7":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "8":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "9":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-
-        case ".":
-            keyValue = key["value"];
-            // display(displayContent);
-
-            // event.target.setAttribute('disabled', 'truen');
-            break;
-        
-        case "+":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "-":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "*":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-        case "/":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-
-        case "=":
-            keyValue = key["value"];
-            // display(displayContent);
-            break;
-
-
-        case "c":
-            displayContent = '';
-            display(displayContent);
-            return
-            break;
-        case "del":
-            // displayContent = displayContent.split("").slice(0, (displayContent.length - 1)).join("");
-            displayContent = del(displayContent);
-            display(displayContent);
-            return
-            break;
-        case "pow":
-            keyValue = "^";
-            // display(displayContent);
-            break;
-        case "cp":
-            copyToClipboard();
-            return
-
-            // display(displayContent);
-            break;
-        // DEFAULT ???
+    if (key.classList.contains('key')) {
+        switch (key.dataset["value"]) {
+            // Clear display content
+            case "c":
+                displayContent = '';
+                display(displayContent);
+                return
+            // Delete one character
+            case "del":
+                // displayContent = displayContent.split("").slice(0, (displayContent.length - 1)).join("");
+                displayContent = del(displayContent);
+                display(displayContent);
+                return
+            // Copy display content
+            case "cp":
+                copyToClipboard();
+                return
+            // Power
+            case "pow":
+                keyValue = "^";
+                break;
+            // Nums and operator left
+            default:
+                keyValue = key.dataset["value"];
+                break;
+        }
     }
-    // innecesar
     
-    log(keyValue);
     displayContent += keyValue;
     let valid = true;
 
-    // IF INVALID START OF STRING
+    // CHECK IF VALID MATH OPERATION
+    // Invalid input start with operator
     if (invalidStart.test(displayContent)) {
         log('INVALID');
-        // Delete last two characters
         displayContent = del(displayContent)
         valid = false;
     }
-
-    // cannot end with two operators (not dot)
-    // If previous was operator replaced with the one just entered
-    if (invalidEnd.test(displayContent)) {
-        log('INVALID');
-        // Delete last two characters
-        // delete char just entered
-        displayContent = del(displayContent);
-        // delete previous char to replace with the just entered
-        displayContent = del(displayContent);
-        displayContent += keyValue;
-        valid = false;
-    }    
-
-    // cannot end with an operand with 2 dots
-    if (invalidEnd2.test(displayContent)) {
-        log('INVALID');
-        // delete char just entered
-        displayContent = del(displayContent);
-        valid = false;
-    }  
-
-    // cannot end with dot and an operator. deletes just 1 char
-    if (invalidEnd3.test(displayContent)) {
-        log('INVALID');
-        // delete char just entered
-        displayContent = del(displayContent);
-        valid = false;
-    } 
-
-    // cannot start with operand and an equal sign
-    if (invalidStart2.test(displayContent)) {
+    // cannot start with operand followed by an equal sign
+    else if (invalidStart2.test(displayContent)) {
         log('INVALID');
         // Delete last two characters
         // celete char just entered
@@ -184,9 +75,32 @@ keyboard.addEventListener('click', event => {
         displayContent = del(displayContent);
         valid = false;
     } 
+    // cannot end with two operators (not dot)
+    // If previous was operator replaced with the one just entered
+    if (invalidEnd.test(displayContent)) {
+        log('INVALID');
+        // Delete last two characters.
+        displayContent = del(displayContent);
+        displayContent = del(displayContent);
+        // Replace previous operator with the last entered
+        displayContent += keyValue;
+        valid = false;
+    }    
+    // cannot end with operand with 2 dots
+    else if (invalidEnd2.test(displayContent)) {
+        log('INVALID');
+        displayContent = del(displayContent);
+        valid = false;
+    }  
+    // cannot end with dot and an operator. deletes just 1 char
+    else if (invalidEnd3.test(displayContent)) {
+        log('INVALID');
+        displayContent = del(displayContent);
+        valid = false;
+    } 
 
     // After buttons are pressed test diplsay content
-    if (regex.test(displayContent)) {
+    if (regex.test(displayContent) && valid) {
         // if match. get matches
         let match = displayContent.match(regex);
         let a = match[1];
@@ -228,7 +142,7 @@ function del(text) {
     return text
 }
 
-// Validate input
+// Basic input validation
 function validInteger(a, b, operator) {
     if (!validOperand.test(a)) {return false};
     if (!validOperand.test(b)) {return false};
@@ -249,6 +163,7 @@ function divide(a, b) {return a / b}
 function power(a, b) {return a ** b}
 
 function operate(a, b, operator) {
+    // Operands to number
     a = +a;
     b = +b;
     let result;
@@ -269,29 +184,24 @@ function operate(a, b, operator) {
             result = power(a, b);
             break; 
     }
-    return result;
+    // If result is integer
+    if (Number.isInteger(result)) {return result}
+    // If result is float round to 2 decimal places
+    else {return result.toFixed(2)}
 }
 
+// Copy result to clipboard
 function copyToClipboard() {
-      // Select the text field
-  const copy = document.querySelector('#clipBoard');
-  copy.value = displayContent;
-  copy.select();
-  copy.setSelectionRange(0, 99999); // For mobile devices
-
-   // Copy the text inside the text field
-  navigator.clipboard.writeText(copy.value);
-
-  // Alert the copied text
-  console.log("Copied the text: " + copy.value);
+  // Select text field
+  if (displayContent) {
+      const copy = document.querySelector('#clipBoard');
+      copy.value = displayContent;
+      copy.select();
+      copy.setSelectionRange(0, 99999); // For mobile devices
+       // Copy the text inside the text field
+      navigator.clipboard.writeText(copy.value);
+      // Alert the copied text
+      console.log("Copied the text: " + copy.value);
+      alert("Copied the text: " + copy.value);
+  }
 }
-
-
-// VALIDATE INPUT
-
-// if operator follow by an operator invalid
-
-/* I could use an input textbox, and add an event listener on change
-so if the user enters input it works,
-and if user type via buttons it also works
-because is onchange */
