@@ -79,12 +79,18 @@ keyboard.addEventListener('click', event => {
     // If previous was operator replaced with the one just entered
     if (invalidEnd.test(displayContent)) {
         log('INVALID');
-        // Delete last two characters.
-        displayContent = del(displayContent);
-        displayContent = del(displayContent);
-        // Replace previous operator with the last entered
-        displayContent += keyValue;
-        valid = false;
+        // If operand is '=' discart it
+        if (keyValue == '=') {
+            displayContent = del(displayContent);
+        }
+        else {
+            // Delete last two characters.
+            displayContent = del(displayContent);
+            displayContent = del(displayContent);
+            // Replace previous operator with the last entered
+            displayContent += keyValue
+            valid = false;
+        }
     }    
     // cannot end with operand with 2 dots
     else if (invalidEnd2.test(displayContent)) {
