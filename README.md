@@ -1,5 +1,5 @@
 # calculator
-Calculator project for The Odin Project
+Calculator project for The Odin Project. Watch it [live](https://diegogo69.github.io/calculator/).
 
 ## How it works
 Calcultor is build using basic HTML principles, and using flebox as its display mode, with wrap property for the keyboard layout. Althought it may present inconsistencies when resize, It gave me flexibility, for not hardcoding the layout.
